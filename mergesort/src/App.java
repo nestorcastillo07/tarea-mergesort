@@ -1,50 +1,77 @@
 public class App {
-    public static void main(String[] args) throws Exception {
+  
+    public static void mergeSort (int[] arr, int left, int right) {
+        if (left < right) {
+            // Encuentra el punto medio del arreglo
+            int mid = (left + right) / 2;
+
+            // Ordena recursivamente la mitad de la  izquierda
+            mergeSort(arr, left, mid);      
+            // Ordena recursivamente la mitad de la derecha
+            mergeSort(arr, mid + 1, right);
+
+            // Combina las dos mitades ordenadas
+            merge(arr, left, mid , right);
+        }
+    }
+
+    public static void merge (int[] arr, int left, int mid, int right) {
+        // Tamanos de los subarreglos a fusionar
+        int sizeLeft = mid - left + 1;
+        int sizeRight = right - mid;
+
+        // Arreglos temporales para almacenar los subarreglos
+        int [] tempLeft = new int [sizeLeft];
+        int [] tempRight = new int [sizeRight];
+
+        // Copia datos a los arreglos temporales
+        for (int i= 0; i <sizeLeft; i++){
+            tempLeft[i] = arr[left + i];
+        }
+        for (int j = 0; j < sizeRight; j++) {
+            tempRight[j] = arr[mid + 1 + j];
+        }
+
+        // Fusionar los subarreglos temporales en el arreglo original
+        int i = 0, j = 0;
+        int k = left; // Indice inicial para el arreglo fusionado
+
+        while (i < sizeLeft && j < sizeRight ) {
+            if (tempLeft[i] <= tempRight[j]) {
+                arr[k] = tempLeft[i];
+                i++;
+            } else {
+                arr[k] = tempRight[j];
+                j++;
+            }
+            k++;
+        }
+        // Copia elementos restantes de tempLeft[] si los hay
+        while (i < sizeLeft) {
+            arr[k] = tempLeft[i];
+            i++;
+            k++;
+        }
+        while (j < sizeRight) {
+            arr[k] = tempRight[j];
+            j++;
+            k++;
+        }
         
-        int[]arr={12, 11, 13, 5, 6};
+    }
+    public static void main(String[] args)  {
+        int[] arr= {38, 27, 43, 3, 9, 82, 10};
+        int n = arr.length;
 
-        System.out.println("arreglo original:");
-        for(int num : arr ){
-            System.out.println(num+" ");
-        }
-        System.out.println();
-        System.out.println("=========================");
-        insertionSort(arr);
+        mergeSort(arr, 0, n-1);
 
-        System.out.println("Arreglo ordenado");
-        for(int num : arr){
-            System.out.println(num+"");
+        System.out.println("Arreglo  ordenado");
+        for (int num : arr){
+            System.out.println(num + "");
+     
         }
     }
-    public static void insertionSort (int[] arr){
-
-   // esta linea calcula  la longitud del arrreglo que se va a ordenar
-    int n = arr.length;
-
-    // Este bucle itera sobre el arreglo desde el segundo elemento hasta el ultimo
-    for(int i = 1; i<n ; i++){
-        
-        //Guardamos el valor del elemento actual en una variable temporal llamda Key
-        int key = arr[i];
-       
-        //inicializamos J como el indice del elemento anterior al actual
-        int j=i-1;
-
-    //Este bucle while se eejecuta mientras j  sea mayor o igual a 0 y el 
-    //elemento en la posicionj aea mayor qye el valor key
-        while(j >=0 && arr[j]> key){
-            
-            //mueve el elemento en la posicion j una posicion hacia adelante
-            arr[j+1]=arr[j];
-          
-            // se decrementa J  para comparar con el elemento anterior
-            j--;
-        }
-        // coloca el valor de key en la posicion adecuada  despues de salir del bucle while
-        arr[j+1]= key ;
-    }
-    }
 
 
-    
+
 }
